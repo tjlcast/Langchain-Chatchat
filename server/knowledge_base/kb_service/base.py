@@ -63,6 +63,7 @@ class KBService(ABC):
         if not os.path.exists(self.doc_path):
             os.makedirs(self.doc_path)
         self.do_create_kb()
+        # 把当前kb添加到知识库列表中
         status = add_kb_to_db(self.kb_name, self.kb_info, self.vs_type(), self.embed_model)
         return status
 

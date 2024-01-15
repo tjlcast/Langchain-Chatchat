@@ -42,6 +42,8 @@ class ApiRequest:
         base_url: str = api_address(),
         timeout: float = HTTPX_DEFAULT_TIMEOUT,
     ):
+        print(
+            "=============================================================================request=============================================================================")
         self.base_url = base_url
         self.timeout = timeout
         self._use_async = False

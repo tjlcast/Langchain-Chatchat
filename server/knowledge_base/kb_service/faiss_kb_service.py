@@ -46,6 +46,9 @@ class FaissKBService(KBService):
         self.vs_path = self.get_vs_path()
 
     def do_create_kb(self):
+        '''
+        只有当vector_store不存在时，才创建新的vector_store，从kb_faiss_pool中load新的store
+        '''
         if not os.path.exists(self.vs_path):
             os.makedirs(self.vs_path)
         self.load_vector_store()

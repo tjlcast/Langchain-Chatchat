@@ -4,7 +4,7 @@ from streamlit_chatbox import *
 from datetime import datetime
 import os
 from configs import (LLM_MODEL, TEMPERATURE, HISTORY_LEN, PROMPT_TEMPLATES,
-                     DEFAULT_KNOWLEDGE_BASE, DEFAULT_SEARCH_ENGINE,LANGCHAIN_LLM_MODEL)
+                     DEFAULT_KNOWLEDGE_BASE, DEFAULT_SEARCH_ENGINE, LANGCHAIN_LLM_MODEL)
 from typing import List, Dict
 
 chat_box = ChatBox(
@@ -13,6 +13,8 @@ chat_box = ChatBox(
         "chatchat_icon_blue_square_v2.png"
     )
 )
+
+
 def get_messages_history(history_len: int, content_in_expander: bool = False) -> List[Dict]:
     '''
     返回消息历史。
@@ -95,6 +97,7 @@ def dialogue_page(api: ApiRequest):
 
         running_models = list(api.list_running_models())
         running_models += LANGCHAIN_LLM_MODEL.keys()
+        print(running_models)
         available_models = []
         config_models = api.list_config_models()
         worker_models = list(config_models.get("worker", {}))  # 仅列出在FSCHAT_MODEL_WORKERS中配置的模型
@@ -107,6 +110,9 @@ def dialogue_page(api: ApiRequest):
         for k, v in config_models.get("langchain", {}).items():  # 列出LANGCHAIN_LLM_MODEL支持的模型
             available_models.append(k)
         llm_models = running_models + available_models
+        print(f"st.session_state:{st.session_state}")
+        print(f"api: {api}")
+        print(f"get_default_llm_model(api)[0]: {get_default_llm_model(api)[0]}")
         index = llm_models.index(st.session_state.get("cur_llm_model", get_default_llm_model(api)[0]))
         llm_model = st.selectbox("选择LLM模型：",
                                  llm_models,

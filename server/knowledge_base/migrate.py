@@ -73,7 +73,9 @@ def folder2db(
         if mode == "recreate_vs":
             kb.clear_vs()
             kb.create_kb()
+            # 扫描 content 目录下的文件，并指定各个文件的切分和向量化（即知识库的meta信息）
             kb_files = file_to_kbfile(kb_name, list_files_from_folder(kb_name))
+            # 使用多线程加载每一个文件（file->doc-text）, 之后再把text插入kb
             files2vs(kb_name, kb_files)
             kb.save_vector_store()
         # # 不做文件内容的向量化，仅将文件元信息存到数据库

@@ -349,6 +349,7 @@ def run_controller(log_level: str = "INFO", started_event: mp.Event = None):
 
     host = FSCHAT_CONTROLLER["host"]
     port = FSCHAT_CONTROLLER["port"]
+    print(f"run_controller: {host}:{port}")
 
     if log_level == "ERROR":
         sys.stdout = sys.__stdout__
@@ -373,6 +374,7 @@ def run_model_worker(
     kwargs = get_model_worker_config(model_name)
     host = kwargs.pop("host")
     port = kwargs.pop("port")
+    print(f"run_model_worker: {host}:{port}")
     kwargs["model_names"] = [model_name]
     kwargs["controller_address"] = controller_address or fschat_controller_address()
     kwargs["worker_address"] = fschat_model_worker_address(model_name)
@@ -416,6 +418,7 @@ def run_openai_api(log_level: str = "INFO", started_event: mp.Event = None):
 
     host = FSCHAT_OPENAI_API["host"]
     port = FSCHAT_OPENAI_API["port"]
+    print(f"run_openai_api: {host}:{port}")
     if log_level == "ERROR":
         sys.stdout = sys.__stdout__
         sys.stderr = sys.__stderr__
@@ -433,6 +436,7 @@ def run_api_server(started_event: mp.Event = None):
 
     host = API_SERVER["host"]
     port = API_SERVER["port"]
+    print(f"run_api_server: {host}:{port}")
 
     uvicorn.run(app, host=host, port=port)
 

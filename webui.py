@@ -57,4 +57,4 @@ if __name__ == "__main__":
         )
 
     if selected_page in pages:
-        pages[selected_page]["func"](api)
+        pages[ selected_page]["func"](api)

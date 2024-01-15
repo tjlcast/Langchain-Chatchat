@@ -41,7 +41,18 @@ class _FaissPool(CachePool):
 
         # create an empty vector store
         doc = Document(page_content="init", metadata={})
+        # vector_store = FAISS.from_documents([doc], embeddings, normalize_L2=True)
         vector_store = FAISS.from_documents([doc], embeddings, normalize_L2=True)
+        '''
+        vector_store 是FAISS对象，ref为 @langchain.vectorstores.faiss.FAISS
+        包含如下对象：
+        1、distance_strategy：[EUCLIDEAN_DISTANCE]
+        2、docstore: InMemoryDocstore
+        3、embedding_function: OpenAIEmbeddings
+        4、embeddings: OpenAIEmbeddings
+        5、index: IndexFlatL2
+        6、index_to_docstore_id: Dict
+        '''
         ids = list(vector_store.docstore._dict.keys())
         vector_store.delete(ids)
         return vector_store
@@ -83,6 +94,15 @@ class KBFaissPool(_FaissPool):
                     if not os.path.exists(vs_path):
                         os.makedirs(vs_path)
                     vector_store = self.new_vector_store(embed_model=embed_model, embed_device=embed_device)
+                    """
+                    Langchain:
+                    Save FAISS index, docstore, and index_to_docstore_id to disk.
+
+                            Args:
+                                folder_path: folder path to save index, docstore,
+                                    and index_to_docstore_id to.
+                                index_name: for saving with a specific index file name
+                    """
                     vector_store.save_local(vs_path)
                 else:
                     raise RuntimeError(f"knowledge base {kb_name} not exist.")

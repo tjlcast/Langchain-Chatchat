@@ -47,6 +47,8 @@ async def chat(query: str = Body(..., description="用户输入", examples=["恼
             [i.to_msg_template() for i in history] + [input_msg])
         chain = LLMChain(prompt=chat_prompt, llm=model)
 
+        prompt_format = chain.prompt.format(input=query)
+
         # Begin a task that runs in the background.
         task = asyncio.create_task(wrap_done(
             chain.acall({"input": query}),
